@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`spreads userdata array 1`] = `
+"--[[ Generated with https://github.com/TypeScriptToLua/TypeScriptToLua ]]
+-- Lua Library inline imports
+function __TS__ArrayMap(arr, callbackfn)
+    local newArray = {}
+    do
+        local i = 0
+        while i < #arr do
+            newArray[i + 1] = callbackfn(_G, arr[i + 1], i, arr)
+            i = i + 1
+        end
+    end
+    return newArray
+end
+
+userData = makeUserData()
+print(
+    {
+        unpack(
+            __TS__ArrayMap(
+                userData,
+                function(___, x) return x end
+            )
+        )
+    }
+)
+"
+`;
