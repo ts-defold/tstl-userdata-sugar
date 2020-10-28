@@ -15,7 +15,7 @@ function __TS__ArrayMap(arr, callbackfn)
     return newArray
 end
 
-userData = makeUserData()
+userData = makeUserData(nil)
 print(
     {
         unpack(

@@ -9,6 +9,29 @@ interface PluginOptions {
   name: string
 }
 
+function isLuaUserData(type: ts.Type): boolean {
+  if (type.aliasSymbol && type.aliasSymbol.declarations.length) {
+    const typeDecl = type.aliasSymbol.declarations[0];
+    if (ts.isTypeAliasDeclaration(typeDecl)) {
+      const typeAlias = typeDecl as ts.TypeAliasDeclaration;
+      if (ts.isIntersectionTypeNode(typeAlias.type)) {
+        const typeIntersection = typeAlias.type as ts.IntersectionTypeNode;
+        const luaUserData = typeIntersection.types.find(t => {
+          if (ts.isTypeReferenceNode(t)) {
+            const typeName = (t as ts.TypeReferenceNode).typeName;
+            return ts.isIdentifier(typeName) && (typeName as ts.Identifier).escapedText == "LuaUserdata";
+          }
+          return false;
+        });
+
+        return luaUserData != undefined;
+      }
+    }    
+  }
+
+  return false;
+}
+
 export default function(options: PluginOptions): tstl.Plugin {
   void options;
 
@@ -16,7 +39,7 @@ export default function(options: PluginOptions): tstl.Plugin {
     visitors: {
       [ts.SyntaxKind.SpreadElement]: (node, context) => {
         const type = context.checker.getTypeAtLocation(node.expression);
-        if (isArrayType(context, type) && type.aliasSymbol?.escapedName == "UserDataArray") {
+        if (isArrayType(context, type) && isLuaUserData(type)) {
           const innerExpression = context.transformExpression(node.expression);
           const x = tstl.createIdentifier("x");
           const self = tstl.createIdentifier("___");          

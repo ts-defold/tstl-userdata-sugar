@@ -25,14 +25,33 @@ const lua = __importStar(require("typescript-to-lua"));
 const typescript_1 = require("typescript-to-lua/dist/transformation/utils/typescript");
 const lualib_1 = require("typescript-to-lua/dist/transformation/utils/lualib");
 const lua_ast_1 = require("typescript-to-lua/dist/transformation/utils/lua-ast");
+function isLuaUserData(type) {
+    if (type.aliasSymbol && type.aliasSymbol.declarations.length) {
+        const typeDecl = type.aliasSymbol.declarations[0];
+        if (ts.isTypeAliasDeclaration(typeDecl)) {
+            const typeAlias = typeDecl;
+            if (ts.isIntersectionTypeNode(typeAlias.type)) {
+                const typeIntersection = typeAlias.type;
+                const luaUserData = typeIntersection.types.find(t => {
+                    if (ts.isTypeReferenceNode(t)) {
+                        const typeName = t.typeName;
+                        return ts.isIdentifier(typeName) && typeName.escapedText == "LuaUserdata";
+                    }
+                    return false;
+                });
+                return luaUserData != undefined;
+            }
+        }
+    }
+    return false;
+}
 function default_1(options) {
     void options;
     return {
         visitors: {
             [ts.SyntaxKind.SpreadElement]: (node, context) => {
-                var _a;
                 const type = context.checker.getTypeAtLocation(node.expression);
-                if (typescript_1.isArrayType(context, type) && ((_a = type.aliasSymbol) === null || _a === void 0 ? void 0 : _a.escapedName) == "UserDataArray") {
+                if (typescript_1.isArrayType(context, type) && isLuaUserData(type)) {
                     const innerExpression = context.transformExpression(node.expression);
                     const x = tstl.createIdentifier("x");
                     const self = tstl.createIdentifier("___");

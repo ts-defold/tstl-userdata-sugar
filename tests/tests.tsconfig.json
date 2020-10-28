@@ -5,8 +5,8 @@
         "module": "commonjs",
         "esModuleInterop": true,
         "moduleResolution": "node",
-        "declaration": true,
-        "sourceMap": true,
+        "declaration": false,
+        "sourceMap": false,
         "newLine": "LF",
         "stripInternal": true,
         "strict": true,
@@ -16,6 +16,7 @@
         "rootDir": "../",
         "outDir": "out"
     },
+    "exclude": ["./node_modules/*", "./dist/*", "./out/*"],
     "tstl": {
         "luaTarget": "5.1",
         "luaLibImport": "inline",
