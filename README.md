@@ -11,6 +11,9 @@ Support array-like user data object destructuring.
 To support this feature we detect a `...` of an `Array<T>` & `LuaUserdata` type and implicitly inject a call to `map(x => x)`. This then returns a table from the userdata and passes it to unpack. There may exist more efficient methods of unpacking your array data directly from the userdata type, and you may want to avoid this syntax sugar if moving large amounts of data.
 
 ```ts
+declare type UserDataArray<T> = Array<T> & LuaUserdata & {
+};
+
 declare function makeUserData(): UserDataArray<number>;
 
 const userData: UserDataArray<number> = makeUserData();
