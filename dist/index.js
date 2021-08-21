@@ -14,7 +14,7 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 var __importStar = (this && this.__importStar) || function (mod) {
     if (mod && mod.__esModule) return mod;
     var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
     __setModuleDefault(result, mod);
     return result;
 };
@@ -26,7 +26,8 @@ const typescript_1 = require("typescript-to-lua/dist/transformation/utils/typesc
 const lualib_1 = require("typescript-to-lua/dist/transformation/utils/lualib");
 const lua_ast_1 = require("typescript-to-lua/dist/transformation/utils/lua-ast");
 function isLuaUserData(type) {
-    if (type.aliasSymbol && type.aliasSymbol.declarations.length) {
+    var _a;
+    if (type.aliasSymbol && ((_a = type.aliasSymbol.declarations) === null || _a === void 0 ? void 0 : _a.length)) {
         const typeDecl = type.aliasSymbol.declarations[0];
         if (ts.isTypeAliasDeclaration(typeDecl)) {
             const typeAlias = typeDecl;

@@ -16,7 +16,7 @@
         "rootDir": "../",
         "outDir": "out"
     },
-    "exclude": ["./node_modules/*", "./dist/*", "./out/*"],
+    "exclude": ["./node_modules/*", "./dist/*", "./out/*", "**/*.test.ts"],
     "tstl": {
         "luaTarget": "5.1",
         "luaLibImport": "inline",

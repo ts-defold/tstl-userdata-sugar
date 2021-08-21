@@ -10,7 +10,7 @@ interface PluginOptions {
 }
 
 function isLuaUserData(type: ts.Type): boolean {
-  if (type.aliasSymbol && type.aliasSymbol.declarations.length) {
+  if (type.aliasSymbol && type.aliasSymbol.declarations?.length) {
     const typeDecl = type.aliasSymbol.declarations[0];
     if (ts.isTypeAliasDeclaration(typeDecl)) {
       const typeAlias = typeDecl as ts.TypeAliasDeclaration;
